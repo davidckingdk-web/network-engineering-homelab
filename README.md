@@ -13,7 +13,7 @@ Each task is written like a “ticket” you’d receive in a Network Operations
 - VLANs, trunking, and SVI design
 - Inter-VLAN routing
 - Static routing and default routes
-- DHCP server configuration and relay (ip helper-address)
+- DHCP server configuration and relay
 - NAT overload (PAT) on Cisco IOS
 - SSH hardening, local AAA, and role-based access
 - Syslog centralization to a remote logging server
@@ -38,14 +38,14 @@ Planned structure:
 - `03-DHCP-and-InterVLAN-Routing/` – DHCP scopes, helper address, host connectivity
 - `04-SSH-and-Device-Hardening/` – AAA, SSH, login control
 - `05-Syslog-and-Monitoring/` – logging to a central server
-- `06-NTP-and-Time-Sync/` – NTP setup (even if lab server is simulated)
+- `06-NTP-and-Time-Sync/` – NTP setup 
 - `07-SNMPv3-Configuration/` – secure monitoring users/groups/views
 - `08-Port-Security-and-Switch-Security/` – sticky MAC, parking VLANs, shutdown unused ports
 - `99-Notes-and-Lessons/` – troubleshooting journal and lessons learned
 
 Each ticket folder will contain:
 
-- `ticket.md` – description of the task just like a real ticket
+- `ticket.md` – description of the task in real-world ticket format
 - `verification.md` – show commands, pings, and outputs
 - `screenshots/` – optional images from the lab
 
@@ -53,7 +53,7 @@ Each ticket folder will contain:
 
 ## 🧭 Roadmap
 
-**Phase 1 – Core Networking (current focus)**  
+**Phase 1 – Core Networking **  
 Build a solid foundation and document:
 
 - VLANs, trunking, SVI design
