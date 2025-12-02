@@ -14,7 +14,7 @@ The office has:
 - SW1 as the access switch  
 - VLAN 10 for Users (192.168.10.0/24)  
 - VLAN 99 for Management (192.168.99.0/24)  
-- An upstream “ISP” router reachable via a /30 link on VLAN 1
+- Physical crossover cable: ISP → R1 FastEthernet0/0 (10.0.0.0/30 WAN link)
 
 We need consistent edge routing and NAT so internal users can reach upstream networks through R1.
 
@@ -26,10 +26,8 @@ We need consistent edge routing and NAT so internal users can reach upstream net
 
 On **R1**:
 
-- Ensure the link toward the ISP uses:
-  - Subinterface: `FastEthernet0/0.1`
-  - Encapsulation: `dot1Q 1 native`
-  - IP: `10.0.0.2/30`
+- Outside interface: FastEthernet0/0 (no subinterface)  
+- IP: 10.0.0.2/30  
 - Configure a **default route**:
   - `0.0.0.0/0` via `10.0.0.1`
 - Confirm the routing table shows:
@@ -41,13 +39,13 @@ On **R1**:
 On **R1**:
 
 - Treat **VLAN 10 (192.168.10.0/24)** as inside LAN  
-- Treat the ISP-facing subinterface (`Fa0/0.1`) as outside  
+- Treat the ISP-facing interface (`Fa0/0`) as outside  
 - Configure **PAT (NAT overload)** so all 192.168.10.0/24 hosts share the outside IP:
   - Create a standard ACL to match 192.168.10.0/24
   - `ip nat inside` on `Fa0/0.10`
-  - `ip nat outside` on `Fa0/0.1`
-  - `ip nat inside source list … interface FastEthernet0/0.1 overload`
-- Remove or clean up any **old NAT statements or interfaces** that no longer match the current topology (e.g. unused `FastEthernet0/1`).
+  - `ip nat outside` on `Fa0/0`
+  - `ip nat inside source list … interface FastEthernet0/0 overload`
+- Remove any leftover subinterfaces (Fa0/0.1, 0/0.10, 0/0.99)
 
 ### 3. Verification
 
@@ -73,5 +71,5 @@ From the **host in VLAN 10**:
 - Default route to `10.0.0.1` present on R1  
 - VLAN 10 and 99 still reachable from R1  
 - Host in VLAN 10 can ping `192.168.10.1` and `10.0.0.1`  
-- NAT configured cleanly using the **current** outside interface (`Fa0/0.1`)  
+- NAT configured cleanly using the **current** outside interface (`Fa0/0`)  
 - `completed.md` created under `02-Routing-and-NAT/` with configs, show outputs, and notes
